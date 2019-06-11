@@ -1,9 +1,17 @@
 package com.n26.domain;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Value;
 
-@Data
+import java.math.BigDecimal;
+
+@Value
 public class Statistics {
 
+    BigDecimal sum;
+    BigDecimal avg;
+    BigDecimal max;
+    BigDecimal min;
+    long count;
 
 }
