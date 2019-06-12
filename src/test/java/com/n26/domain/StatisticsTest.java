@@ -1,11 +1,14 @@
 package com.n26.domain;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@Slf4j
 public class StatisticsTest {
 
     static private final BigDecimal sum = BigDecimal.valueOf(1000.000);
@@ -14,30 +17,34 @@ public class StatisticsTest {
     static private final BigDecimal min = BigDecimal.valueOf(50.324);
     static private final long count = 10;
 
-    // TODO Check validity of arguments passed in to the constructor and builder
-    // 1a. sum
-    @Test(expected = Exception.class)
+    @Test
+    public void constructorCreatesAnInstanceCorrectly() {
+        log.info("Test: constructor creates an instance when input arguments are valid");
+        Statistics stats = new Statistics(sum, avg, max, min, count);
+        assertNotNull(stats);
+    }
+
+    @Test(expected = NullPointerException.class)
     public void constructorShouldThrowExceptionWhen_SumIsNull() throws Exception {
-        throw new Exception();
+        log.info("Test: constructor throws exception when input argument 'sum' is null");
+        Statistics stats = new Statistics(null, avg, max, min, count);
     }
 
-    // 2. avg
-    @Test(expected = Exception.class)
+    @Test(expected = NullPointerException.class)
     public void constructorShouldThrowExceptionWhen_AvgIsNull() throws Exception {
-        throw new Exception();
+        log.info("Test: constructor throws exception when input argument 'avg' is null");
+        Statistics stats = new Statistics(sum, null, max, min, count);
     }
 
-    // 3. max
-    @Test(expected = Exception.class)
+    @Test(expected = NullPointerException.class)
     public void constructorShouldThrowExceptionWhen_MaxIsNull() throws Exception {
-        throw new Exception();
+        log.info("Test: constructor throws exception when input argument 'max' is null");
+        Statistics stats = new Statistics(sum, avg, null, min, count);
     }
 
-    // 4. min
-    @Test(expected = Exception.class)
+    @Test(expected = NullPointerException.class)
     public void constructorShouldThrowExceptionWhen_MinIsNull() throws Exception {
-        throw new Exception();
+        log.info("Test: constructor throws exception when input argument 'min' is null");
+        Statistics stats = new Statistics(sum, avg, max, null, count);
     }
-
-
 }
