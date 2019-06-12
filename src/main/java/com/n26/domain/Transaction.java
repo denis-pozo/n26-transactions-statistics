@@ -16,10 +16,10 @@ public class Transaction {
             throw new NullPointerException("Input parameters cannot be null");
         }
 
-        /* Assumption: No delay from the POST request with the transaction until the creation of
-         * the instance. Theoretically a faked post request with a date in the future (~ delay)
-         * will pass this argument checker. However, at this level is almost impossible to correct
-         * the effect of the delay. */
+        /* Assumption: there is no delay from the POST request with the transaction until the
+         * creation of the instance. Theoretically a faked post request with a date in the future
+         * (~ delay) will pass this argument checker. However, at this level is almost impossible to
+         * correct the effect of the delay. */
         if (timestamp.isAfter(Instant.now())) {
             throw new IllegalArgumentException (
                 "Illegal timestamp: Transactions cannot be done in the future (yet)");
