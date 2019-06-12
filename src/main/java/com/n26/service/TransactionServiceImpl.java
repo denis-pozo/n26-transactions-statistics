@@ -1,13 +1,15 @@
 package com.n26.service;
 
 import com.n26.domain.Transaction;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
 
+@Service
 public class TransactionServiceImpl implements TransactionService {
 
-    private List<Transaction> transactions = new ArrayList<Transaction>();
+    private List<Transaction> transactions = new ArrayList<>();
 
     @Override
     public List<Transaction> getAllTransactions() {
@@ -21,9 +23,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void addTransaction(Transaction transaction) {
+    public boolean addTransaction(Transaction transaction) {
         transactions.add(transaction);
         transactions.sort(Comparator.comparing(Transaction::getTimestamp));
+        return false;
     }
 
     @Override
