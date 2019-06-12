@@ -42,7 +42,7 @@ public class TransactionTest {
     @Test(expected = IllegalArgumentException.class)
     public void constructorShouldThrowExceptionWhen_TimestampIsInTheFuture() {
         log.info("Test: constructor throws exception when input argument 'timestamp' is in the future");
-        Instant timestamp = Instant.now().plusMillis(10);
+        Instant timestamp = Instant.now().plusMillis(50);
         Transaction transaction = new Transaction(amount, timestamp);
     }
 }
