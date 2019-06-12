@@ -6,10 +6,7 @@ import com.n26.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -18,12 +15,10 @@ import java.time.Instant;
 @RestController
 public class TransactionController {
 
-    private static final String SUCCESS_STATUS = "success";
-    private static final String ERROR_STATUS = "error";
-    private static final int CODE_SUCCESS = 201;
-    private static final int DEPRECATED_TRANSACTION = 204;
-    private static final int INVALID_JSON = 400;
-    private static final int PARSING_ERROR = 422;
+    private static final HttpStatus SUCCESS = HttpStatus.CREATED;
+    private static final HttpStatus DEPRECATED_TRANSACTION = HttpStatus.NO_CONTENT;
+    private static final HttpStatus INVALID_JSON = HttpStatus.BAD_REQUEST;
+    private static final HttpStatus PARSING_ERROR = HttpStatus.UNPROCESSABLE_ENTITY;
 
     @Autowired
     TransactionService transactionService;
@@ -38,12 +33,21 @@ public class TransactionController {
             Transaction transaction = new Transaction(amount, Instant.parse(timestamp));
             transactionService.addTransaction(transaction);
         } catch (NullPointerException npe ) {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity(INVALID_JSON);
         } catch (IllegalArgumentException iae) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity(DEPRECATED_TRANSACTION);
         }
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(SUCCESS);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteAllTransactions() {
+        if (transactionService.deleteAllTransactions()) {
+            return new ResponseEntity(SUCCESS);
+        }
+
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
