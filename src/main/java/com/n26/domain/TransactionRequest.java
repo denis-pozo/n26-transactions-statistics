@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-
 @ToString
 public class TransactionRequest {
 
     @Getter @Setter
-    private BigDecimal amount;
+    private String amount;
 
     @Getter @Setter
     private String timestamp;

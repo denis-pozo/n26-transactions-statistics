@@ -1,10 +1,12 @@
 package com.n26.controller;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.n26.domain.Transaction;
 import com.n26.domain.TransactionRequest;
 import com.n26.service.TransactionService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,16 +32,17 @@ public class TransactionController {
     public ResponseEntity addTransaction(@RequestBody TransactionRequest request) {
 
         try {
-            BigDecimal amount = request.getAmount();
+            BigDecimal amount = new BigDecimal(request.getAmount());
             Instant timestamp = Instant.parse(request.getTimestamp());
+
             Transaction transaction = new Transaction(amount, timestamp);
             if(!transactionService.addTransaction(transaction)) {
                 return new ResponseEntity(NO_CONTENT_204);
             }
-        } catch (NullPointerException npe ) {
+        } catch (NullPointerException | NumberFormatException nfe) {
             return new ResponseEntity(INVALID_JSON_400);
         } catch (IllegalArgumentException iae) {
-            return new ResponseEntity(NO_CONTENT_204);
+            return new ResponseEntity(PARSING_ERROR_422);
         } catch (DateTimeParseException pe) {
             return new ResponseEntity(PARSING_ERROR_422);
         }
