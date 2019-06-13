@@ -2,9 +2,6 @@ package com.n26.domain;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 @ToString
 @Getter
 @Setter

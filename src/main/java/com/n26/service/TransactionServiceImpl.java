@@ -27,9 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public boolean addTransaction(Transaction transaction) {
-        log.info("Trying to store transaction...");
         if(isOld(transaction)) {
-            log.info("Discarded transaction: transaction older than 60 secs");
             return false;
         }
 
@@ -39,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
             e.printStackTrace();
             return false;
         }
-        log.info("Transaction has been successfully added");
+
         return true;
     }
 
@@ -57,7 +55,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Scheduled(fixedRate = 60 * 1000)
     private void updateTransactions() {
-        log.info("Updating list of transactions ...");
 
         while (transactions.size() > 0 && isOld(transactions.peek())) {
             try {

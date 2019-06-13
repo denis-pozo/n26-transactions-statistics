@@ -1,12 +1,10 @@
 package com.n26.controller;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.n26.domain.Transaction;
 import com.n26.domain.TransactionRequest;
 import com.n26.service.TransactionService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -29,8 +27,8 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping
-    @ApiOperation(value = "Add transaction to the transactions list, if it is dated within last 60 secs.")
-    public ResponseEntity addTransaction(@RequestBody TransactionRequest request) {
+    @ApiOperation(value = "Create new transaction, if it is dated within the last 60 secs")
+    public ResponseEntity createTransaction(@RequestBody TransactionRequest request) {
 
         try {
             BigDecimal amount = new BigDecimal(request.getAmount());

@@ -18,7 +18,7 @@ public class StatisticsController {
     StatisticsService statisticsService;
 
     @GetMapping
-    @ApiOperation(value = "Display transaction statistics of the last 60 seconds.")
+    @ApiOperation("Get transaction statistics within the last 60 sec")
     public StatisticsResponse getStatistics() {
         return statisticsService.getStatistics(transactionService.getTransactions());
     }

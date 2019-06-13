@@ -1,18 +1,12 @@
 package com.n26.domain;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Time;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.TimeZone;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @Slf4j
 public class TransactionTest {

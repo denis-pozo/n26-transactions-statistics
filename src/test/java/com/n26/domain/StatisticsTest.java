@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 @Slf4j
 public class StatisticsTest {
 
-    static private final BigDecimal sum = BigDecimal.valueOf(1000);
-    static private final BigDecimal avg = BigDecimal.valueOf(100);
-    static private final BigDecimal max = BigDecimal.valueOf(200000);
-    static private final BigDecimal min = BigDecimal.valueOf(50);
+    static private final BigDecimal sum = BigDecimal.valueOf(1000.00);
+    static private final BigDecimal avg = BigDecimal.valueOf(100.534);
+    static private final BigDecimal max = BigDecimal.valueOf(200000.487);
+    static private final BigDecimal min = BigDecimal.valueOf(50.23);
     static private final long count = 10;
 
     @Test
@@ -54,10 +54,8 @@ public class StatisticsTest {
 
         Statistics stats = new Statistics(sum, avg, max, min, count);
         assertEquals("1000.00", stats.getSum().toString());
-        assertEquals("100.00", stats.getAvg().toString());
-        assertEquals("200000.00", stats.getMax().toString());
-        assertEquals("50.00", stats.getMin().toString());
+        assertEquals("100.53", stats.getAvg().toString());
+        assertEquals("200000.49", stats.getMax().toString());
+        assertEquals("50.23", stats.getMin().toString());
     }
-
-    // TODO - Create parametric tests for testing format protected method with special cases
 }

@@ -65,7 +65,7 @@ public class TransactionServiceImplTest {
 
         assertEquals(3, service.getTransactions().size());
 
-        Thread.sleep(10000);
+        Thread.sleep(15000);
         assertEquals(2, service.getTransactions().size());
     }
 
