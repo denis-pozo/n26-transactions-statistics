@@ -1,8 +1,8 @@
 package com.n26.service;
 
 import com.n26.domain.Statistics;
+import com.n26.domain.StatisticsResponse;
 import com.n26.domain.Transaction;
-import org.apache.commons.lang3.concurrent.BackgroundInitializer;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,7 +14,27 @@ import java.util.stream.Collectors;
 public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
-    public Statistics computeStatistics(List<Transaction> transactions) {
+    public StatisticsResponse getStatistics(List<Transaction> transactions) {
+        Statistics statistics = computeStatistics(transactions);
+
+        return new StatisticsResponse(
+                statistics.getSum().toString(),
+                statistics.getAvg().toString(),
+                statistics.getMax().toString(),
+                statistics.getMin().toString(),
+                statistics.getCount()
+        );
+    }
+
+    private Statistics computeStatistics(List<Transaction> transactions) {
+        if(transactions.size() == 0) {
+            return new Statistics(BigDecimal.ZERO,
+                                  BigDecimal.ZERO,
+                                  BigDecimal.ZERO,
+                                  BigDecimal.ZERO,
+                            0);
+        }
+
         List<BigDecimal> amounts = transactions.stream()
                                     .map(Transaction::getAmount)
                                     .filter(Objects::nonNull)
@@ -22,8 +42,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         BigDecimal sum = amounts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal avg = computeAvg(amounts);
-        BigDecimal min = computeMin(amounts);
         BigDecimal max = computeMax(amounts);
+        BigDecimal min = computeMin(amounts);
 
         return new Statistics(sum, avg, max, min, amounts.size());
     }
@@ -53,7 +73,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private BigDecimal computeMin(List<BigDecimal> amounts) {
-        BigDecimal min = BigDecimal.ZERO;
+        BigDecimal min = amounts.get(0);
 
         for(BigDecimal number : amounts) {
             if(min.compareTo(number) > 0) {
