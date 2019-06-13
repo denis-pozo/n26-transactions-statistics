@@ -6,6 +6,7 @@ import com.n26.domain.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
         }
 
-        return avg.divide(new BigDecimal(amounts.size()));
+        return avg.divide(new BigDecimal(amounts.size()), 2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal computeMax(List<BigDecimal> amounts) {

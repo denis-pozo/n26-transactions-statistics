@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -39,9 +40,13 @@ public class TransactionController {
             if(!transactionService.addTransaction(transaction)) {
                 return new ResponseEntity(NO_CONTENT_204);
             }
-        } catch (NullPointerException | NumberFormatException nfe) {
+        } catch (NullPointerException npe) {
             return new ResponseEntity(INVALID_JSON_400);
+        } catch (NumberFormatException nfe) {
+            return new ResponseEntity(PARSING_ERROR_422);
         } catch (IllegalArgumentException iae) {
+            return new ResponseEntity(PARSING_ERROR_422);
+        } catch (HttpMessageNotReadableException hmnre) {
             return new ResponseEntity(PARSING_ERROR_422);
         } catch (DateTimeParseException pe) {
             return new ResponseEntity(PARSING_ERROR_422);
