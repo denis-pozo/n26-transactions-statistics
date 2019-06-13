@@ -19,7 +19,7 @@ public class TransactionServiceImplTest {
     public void whenAddTransactionOlderThan60Secs_thenTransactionIsIgnored() {
         log.info("Test: transactions older than 60 secs must be ignored");
 
-        Instant before60Seconds = Instant.now().minusSeconds(61t );
+        Instant before60Seconds = Instant.now().minusSeconds(61);
         Transaction oldTransaction = new Transaction(new BigDecimal(123.45), before60Seconds);
         assertFalse(service.addTransaction(oldTransaction));
         assertEquals(0, service.getTransactions().size());
