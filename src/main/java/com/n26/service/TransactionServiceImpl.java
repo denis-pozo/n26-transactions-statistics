@@ -27,7 +27,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public boolean addTransaction(Transaction transaction) {
-        if(transaction.getTimestamp().isBefore(Instant.now().minusSeconds(60))) return false;
+        log.info("Trying to store transaction...");
+        if(isOld(transaction)) {
+            log.info("Discarded transaction: transaction older than 60 secs");
+            return false;
+        }
 
         try {
             transactions.put(transaction);
@@ -35,11 +39,13 @@ public class TransactionServiceImpl implements TransactionService {
             e.printStackTrace();
             return false;
         }
+        log.info("Transaction has been successfully added");
         return true;
     }
 
     @Override
     public List<Transaction> getTransactions() {
+        updateTransactions();
         return new ArrayList<>(transactions);
     }
 
@@ -49,20 +55,25 @@ public class TransactionServiceImpl implements TransactionService {
         return true;
     }
 
-    @Override
     @Scheduled(fixedRate = 60 * 1000)
-    public void updateTransactions() {
+    private void updateTransactions() {
         log.info("Updating list of transactions ...");
-        log.info(transactions.toString());
-        Instant now = Instant.now();
-        while (transactions.size() > 0 && transactions.peek().getTimestamp().isBefore(now)) {
+
+        while (transactions.size() > 0 && isOld(transactions.peek())) {
             try {
-                Transaction transaction = transactions.take();
+                transactions.take();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        log.info("List of current transactions has been updated: " + transactions);
+    }
+
+    private boolean isOld(Transaction transaction) {
+        if(transaction.getTimestamp().isBefore(Instant.now().minusSeconds(60))){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

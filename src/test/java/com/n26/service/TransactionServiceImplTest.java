@@ -36,7 +36,6 @@ public class TransactionServiceImplTest {
         assertEquals(1, service.getTransactions().size());
 
         Thread.sleep(3000);
-        service.updateTransactions();
         assertEquals(0, service.getTransactions().size());
     }
 }

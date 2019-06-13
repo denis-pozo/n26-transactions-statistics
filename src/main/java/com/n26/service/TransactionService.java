@@ -9,5 +9,4 @@ public interface TransactionService {
     boolean addTransaction(Transaction transaction);
     List<Transaction> getTransactions();
     boolean deleteAllTransactions();
-    void updateTransactions();
 }
