@@ -58,6 +58,7 @@ public class TransactionController {
     @DeleteMapping
     @ApiOperation(value = "Delete current transactions")
     public ResponseEntity deleteAllTransactions() {
+        
         if (transactionService.deleteAllTransactions()) {
             return new ResponseEntity(NO_CONTENT_204);
         }
