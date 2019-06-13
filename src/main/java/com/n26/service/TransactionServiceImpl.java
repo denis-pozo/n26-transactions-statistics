@@ -12,7 +12,7 @@ public class TransactionServiceImpl implements TransactionService {
     private List<Transaction> transactions = new ArrayList<>();
 
     @Override
-    public List<Transaction> getAllTransactions() {
+    public List<Transaction> getTransactions() {
         updateList();
         return transactions;
     }
