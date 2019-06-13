@@ -49,12 +49,18 @@ public class TransactionServiceImpl implements TransactionService {
         return true;
     }
 
+    @Override
     @Scheduled(fixedRate = 60 * 1000)
-    private void updateList() throws InterruptedException {
+    public void updateTransactions() {
         log.info("Updating list of transactions ...");
+        log.info(transactions.toString());
         Instant now = Instant.now();
         while (transactions.size() > 0 && transactions.peek().getTimestamp().isBefore(now)) {
-            Transaction transaction = transactions.take();
+            try {
+                Transaction transaction = transactions.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         log.info("List of current transactions has been updated: " + transactions);
     }

@@ -5,7 +5,9 @@ import com.n26.domain.Transaction;
 import java.util.List;
 
 public interface TransactionService {
-    List<Transaction> getTransactions();
+
     boolean addTransaction(Transaction transaction);
+    List<Transaction> getTransactions();
     boolean deleteAllTransactions();
+    void updateTransactions();
 }
